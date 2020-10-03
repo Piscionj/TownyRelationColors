@@ -1,0 +1,40 @@
+#============================#
+#   Towny Relation Colors    #
+#          Config            #
+#============================#
+
+#----------------------------#
+# Selectable Relation Colors #
+#----------------------------#
+# AQUA - BLACK - BLUE - DARK_AQUA
+# DARK_BLUE - DARK_GRAY - DARK_GREEN
+# DARK_PURPLE - DARK_RED - GOLD
+# GRAY - GREEN - LIGHT_PURPLE - RED
+# WHITE - YELLOW
+
+relationColor:
+  nation: GOLD
+  town: GREEN
+  enemy: RED
+  ally: BLUE
+
+#-----------------------------#
+# Custom Rank Colors/Prefixes #
+#-----------------------------#
+# Set to true to have a space between a player's prefix and their name, false otherwise
+
+spaceBetweenPrefixAndName: true
+
+# Custom ranks
+# Notes: Color will be overridden by a relation color, but prefixes will always appear
+#        If a player inherits multiple ranks, their color will be from the first listed rank below they belong to
+#        If a player inherits multiple ranks from the same group, they will have the attributes of the first rank listed
+#        If a rank shouldn't have a prefix, add NULL for its value
+# Format: Color,Prefix,Group Name,List of Comma Separated Permissions
+
+customRanks:
+  - LIGHT_PURPLE,✾,Staff,group.staff,group.mod,group.admin
+  - AQUA,Three,Donator,group.rankthree
+  - AQUA,Two,Donator,group.ranktwo
+  - AQUA,NULL,Donator,group.rankone
+
