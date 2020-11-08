@@ -1,6 +1,6 @@
-package RCCommands;
+package me.viscar.townyrelationalcolors.commands;
 
-import RCMain.TownScoreboardManager;
+import me.viscar.townyrelationalcolors.TownScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -30,7 +30,7 @@ public class Commands implements CommandExecutor {
             return false;
         }
         commandSender.sendMessage(ChatColor.AQUA + "[RC] Reloading plugin ...");
-        Bukkit.getPluginManager().getPlugin("RelationColors").reloadConfig();
+        Bukkit.getPluginManager().getPlugin("TownyRelationalColors").reloadConfig();
         tsbm.reinitialize();
         for (Player player : Bukkit.getOnlinePlayers())
             tsbm.onPlayerLogin(player);
