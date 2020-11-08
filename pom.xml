@@ -45,15 +45,15 @@
 
 
     <repositories>
-        <!-- This adds the Spigot Maven repository to the build -->
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <!-- Also supplies spigot, if one want's to fall back to it. -->
+            <url>https://papermc.io/repo/repository/maven-public</url>
         </repository>
 
         <repository>
-            <id>github-towny</id>
-            <url>https://maven.pkg.github.com/townyadvanced/towny</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
 
         <repository>
@@ -67,23 +67,23 @@
     <dependencies>
         <!--This adds the Spigot API artifact to the build -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.palmergames.bukkit.towny</groupId>
+            <groupId>com.github.TownyAdvanced</groupId>
             <artifactId>Towny</artifactId>
-            <version>0.96.1.0</version>
+            <version>0.96.3.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
+            <version>4.5.1</version>
         </dependency>
 
     </dependencies>
