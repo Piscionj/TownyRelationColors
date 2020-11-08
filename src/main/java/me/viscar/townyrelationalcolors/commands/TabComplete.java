@@ -1,4 +1,4 @@
-package RCCommands;
+package me.viscar.townyrelationalcolors.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

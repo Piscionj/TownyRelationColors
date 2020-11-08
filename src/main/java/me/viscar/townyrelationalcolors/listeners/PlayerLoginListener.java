@@ -1,6 +1,6 @@
-package RCListeners;
+package me.viscar.townyrelationalcolors.listeners;
 
-import RCMain.TownScoreboardManager;
+import me.viscar.townyrelationalcolors.TownScoreboardManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;

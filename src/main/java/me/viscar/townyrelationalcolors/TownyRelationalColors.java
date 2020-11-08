@@ -1,8 +1,8 @@
-package RCMain;
+package me.viscar.townyrelationalcolors;
 
-import RCCommands.Commands;
-import RCCommands.TabComplete;
-import RCListeners.*;
+import me.viscar.townyrelationalcolors.commands.Commands;
+import me.viscar.townyrelationalcolors.commands.TabComplete;
+import me.viscar.townyrelationalcolors.listeners.*;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Plugin that utilizes scoreboard teams to add in game relational coloring for other players depending
  * on their Towny relations
  */
-public class RelationColors extends JavaPlugin {
+public class TownyRelationalColors extends JavaPlugin {
 
     private Logger log = Bukkit.getLogger();
     private TownScoreboardManager townSbManager;
