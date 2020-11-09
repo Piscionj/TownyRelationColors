@@ -1,6 +1,6 @@
-package RCListeners;
+package me.viscar.townyrelationalcolors.listeners;
 
-import RCMain.TownScoreboardManager;
+import me.viscar.townyrelationalcolors.TownScoreboardManager;
 import com.palmergames.bukkit.towny.event.NationAddTownEvent;
 import com.palmergames.bukkit.towny.event.NationRemoveTownEvent;
 import com.palmergames.bukkit.towny.object.Nation;

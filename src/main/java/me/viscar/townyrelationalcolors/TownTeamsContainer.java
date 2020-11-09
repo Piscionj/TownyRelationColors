@@ -1,4 +1,4 @@
-package RCMain;
+package me.viscar.townyrelationalcolors;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;

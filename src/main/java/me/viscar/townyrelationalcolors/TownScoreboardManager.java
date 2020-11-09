@@ -1,4 +1,4 @@
-package RCMain;
+package me.viscar.townyrelationalcolors;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -314,7 +314,7 @@ public class TownScoreboardManager {
     // FIELDS
 
     private void initConfigFields() {
-        this.plugin = Bukkit.getPluginManager().getPlugin("RelationColors");
+        this.plugin = Bukkit.getPluginManager().getPlugin("TownyRelationalColors");
 
         townColor = ChatColor.valueOf(plugin.getConfig().getString("relationColor.town"));
         nationColor = ChatColor.valueOf(plugin.getConfig().getString("relationColor.nation"));

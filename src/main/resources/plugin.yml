@@ -1,0 +1,12 @@
+name: TownyRelationalColors
+main: me.viscar.townyrelationalcolors.TownyRelationalColors
+Author: Viscar
+version: ${project.version}
+api-version: ${project.bukkit.APIVersion}
+depend:
+  - Towny
+  - ProtocolLib
+softdepend:
+  - AnimatedNames
+commands:
+  rc:
