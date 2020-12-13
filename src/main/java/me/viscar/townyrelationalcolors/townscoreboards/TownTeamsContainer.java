@@ -1,11 +1,8 @@
-package me.viscar.townyrelationalcolors;
+package me.viscar.townyrelationalcolors.townscoreboards;
 
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.utility.MinecraftReflection;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
@@ -17,7 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -62,20 +58,9 @@ public class TownTeamsContainer {
         if (relColor.equals(ChatColor.WHITE))
             relColor = tsbm.getRankColor(player);
         String prefix = tsbm.getPlayerPrefixes(player);
-        PacketContainer redundantPacket = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        PacketContainer teamPacket = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        // Set mode
-        redundantPacket.getIntegers().write(0, 0);
-        teamPacket.getIntegers().write(0, 3);
-        // Set name
-        redundantPacket.getStrings().write(0, "RC" + relColor + prefix);
-        teamPacket.getStrings().write(0, "RC" + relColor + prefix);
-        // Set prefix
-        teamPacket.getChatComponents().write(1, WrappedChatComponent.fromText(prefix));
-        // Set players to send
-        teamPacket.getSpecificModifier(Collection.class).write(0, Arrays.asList(player.getName()));
-        // Set colors
-        teamPacket.getEnumModifier(ChatColor.class, MinecraftReflection.getMinecraftClass("EnumChatFormat")).write(0, relColor);
+
+        PacketContainer redundantPacket = PacketSender.createRedundantTeamPacket(relColor, prefix, Arrays.asList(player.getName()));
+        PacketContainer teamPacket = PacketSender.createTeamPacket(relColor, prefix, Arrays.asList(player.getName()));
 
         try {
             // Send packets for ranked members
@@ -112,54 +97,23 @@ public class TownTeamsContainer {
             Resident res = TownyAPI.getInstance().getDataSource().getResident(player.getName());
             ChatColor relColor = getRelation(res);
             // Send packets for non ranked members
-            if (!nonRankedMembers.isEmpty()) {
-                protocolManager.sendServerPacket(player, createRedundantPacket(relColor, ""));
-                protocolManager.sendServerPacket(player, createPacket(relColor, "", nonRankedMembers));
-            }
+            if (!nonRankedMembers.isEmpty())
+                PacketSender.sendTeamPackets(player, relColor, "", nonRankedMembers);
+
             // Send packets for ranked members
             if (!rankedTownMembers.isEmpty()) {
                 for (Player townMember : rankedTownMembers) {
                     if (relColor.equals(ChatColor.WHITE))
                         relColor = tsbm.getRankColor(townMember);
                     String prefixes = tsbm.getPlayerPrefixes(townMember);
-                    protocolManager.sendServerPacket(player, createRedundantPacket(relColor, prefixes));
-                    protocolManager.sendServerPacket(player, createPacket(relColor, prefixes, Arrays.asList(player.getName())));
+                    PacketSender.sendTeamPackets(player, relColor, prefixes, Arrays.asList(townMember.getName()));
                 }
             }
-        } catch (InvocationTargetException e) {
-            Bukkit.getLogger().info("[RC] Runtime error while sending packets for town " + town.getName() + ", aborting");
-            return;
         } catch (NotRegisteredException e) {
             Bukkit.getLogger().info("[RC] Towny exception while sending packets to " + player.getName() + ", aborting");
             return;
         }
 
-    }
-
-    public PacketContainer createRedundantPacket(ChatColor color, String prefix) {
-        PacketContainer teamPacket = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        // Set mode
-        teamPacket.getIntegers().write(0, 0);
-        // Set name
-        teamPacket.getStrings().write(0, "RC" + color + prefix);
-
-        return teamPacket;
-    }
-
-    public PacketContainer createPacket(ChatColor color, String prefix, Collection<String> players) {
-        PacketContainer redundantPacket = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        // Set mode
-        redundantPacket.getIntegers().write(0, 3);
-        // Set name
-        redundantPacket.getStrings().write(0, "RC" + color + prefix);
-        // Set prefix
-        redundantPacket.getChatComponents().write(1, WrappedChatComponent.fromText(prefix));
-        // Set players to send
-        redundantPacket.getSpecificModifier(Collection.class).write(0, players);
-        // Set colors
-        redundantPacket.getEnumModifier(ChatColor.class, MinecraftReflection.getMinecraftClass("EnumChatFormat")).write(0, color);
-
-        return redundantPacket;
     }
 
 

@@ -1,22 +1,19 @@
 package me.viscar.townyrelationalcolors.listeners;
 
-import me.viscar.townyrelationalcolors.TownScoreboardManager;
 import com.palmergames.bukkit.towny.event.NewTownEvent;
 import com.palmergames.bukkit.towny.object.Town;
+import me.viscar.townyrelationalcolors.TownyRelationalColors;
+import me.viscar.townyrelationalcolors.townscoreboards.TownScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 
 public class TownCreateListener implements Listener {
 
     private TownScoreboardManager tsbm;
-    private Plugin plugin;
-
-    public TownCreateListener(TownScoreboardManager tsbm, Plugin plugin){
-        this.tsbm = tsbm;
-        this.plugin = plugin;
+    public TownCreateListener(){
+        this.tsbm = TownyRelationalColors.getScoreboardManager();
     }
 
     /**

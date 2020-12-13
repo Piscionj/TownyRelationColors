@@ -1,6 +1,7 @@
 package me.viscar.townyrelationalcolors.commands;
 
-import me.viscar.townyrelationalcolors.TownScoreboardManager;
+import me.viscar.townyrelationalcolors.TownyRelationalColors;
+import me.viscar.townyrelationalcolors.townscoreboards.TownScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,9 +12,8 @@ import org.bukkit.entity.Player;
 public class Commands implements CommandExecutor {
 
     private TownScoreboardManager tsbm;
-
-    public Commands(TownScoreboardManager tsbm) {
-        this.tsbm = tsbm;
+    public Commands() {
+        this.tsbm = TownyRelationalColors.getScoreboardManager();
     }
 
     /**
@@ -21,7 +21,6 @@ public class Commands implements CommandExecutor {
      */
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        // Check they are trying to do the reload command
         if (strings.length <= 0 || !strings[0].equalsIgnoreCase("reload"))
             return false;
         // Check they have proper permissions

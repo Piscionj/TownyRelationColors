@@ -1,10 +1,12 @@
 package me.viscar.townyrelationalcolors.listeners;
 
-import me.viscar.townyrelationalcolors.TownScoreboardManager;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.DeleteNationEvent;
 import com.palmergames.bukkit.towny.event.NewNationEvent;
 import com.palmergames.bukkit.towny.object.Nation;
+import me.viscar.townyrelationalcolors.TownyRelationalColors;
+import me.viscar.townyrelationalcolors.townscoreboards.TownScoreboardManager;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -27,10 +29,10 @@ public class ScuffedNationAllyListener implements Listener {
     private Set<String> toDelete = new HashSet<String>();
     private Set<Nation> toAdd = new HashSet<Nation>();
 
-    public ScuffedNationAllyListener(Plugin plugin, TownScoreboardManager tsbm){
+    public ScuffedNationAllyListener(){
         this.natAllies = new HashMap<Nation, List<Nation>>();
-        this.plugin = plugin;
-        this.tsbm = tsbm;
+        this.plugin = Bukkit.getPluginManager().getPlugin("TownyRelationalColors");
+        this.tsbm = TownyRelationalColors.getScoreboardManager();
         initNatAllies();
         initScanner();
     }

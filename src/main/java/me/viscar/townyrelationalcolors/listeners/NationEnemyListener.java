@@ -1,17 +1,18 @@
 package me.viscar.townyrelationalcolors.listeners;
 
-import me.viscar.townyrelationalcolors.TownScoreboardManager;
 import com.palmergames.bukkit.towny.event.NationAddEnemyEvent;
 import com.palmergames.bukkit.towny.event.NationRemoveEnemyEvent;
 import com.palmergames.bukkit.towny.object.Nation;
+import me.viscar.townyrelationalcolors.TownyRelationalColors;
+import me.viscar.townyrelationalcolors.townscoreboards.TownScoreboardManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class NationEnemyListener implements Listener {
 
     private TownScoreboardManager tsbm;
-    public NationEnemyListener(TownScoreboardManager tsbm){
-        this.tsbm = tsbm;
+    public NationEnemyListener(){
+        this.tsbm = TownyRelationalColors.getScoreboardManager();
     }
 
     /**

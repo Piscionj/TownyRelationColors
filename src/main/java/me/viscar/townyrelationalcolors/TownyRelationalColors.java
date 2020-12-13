@@ -1,8 +1,5 @@
 package me.viscar.townyrelationalcolors;
 
-import me.viscar.townyrelationalcolors.commands.Commands;
-import me.viscar.townyrelationalcolors.commands.TabComplete;
-import me.viscar.townyrelationalcolors.listeners.*;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -10,6 +7,10 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import me.viscar.townyrelationalcolors.commands.Commands;
+import me.viscar.townyrelationalcolors.commands.TabComplete;
+import me.viscar.townyrelationalcolors.listeners.*;
+import me.viscar.townyrelationalcolors.townscoreboards.TownScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
 public class TownyRelationalColors extends JavaPlugin {
 
     private Logger log = Bukkit.getLogger();
-    private TownScoreboardManager townSbManager;
+    private static TownScoreboardManager townSbManager;
 
     ProtocolManager protocolManager;
 
@@ -35,6 +36,7 @@ public class TownyRelationalColors extends JavaPlugin {
         townSbManager = new TownScoreboardManager();
         initListeners();
 
+        // Hot fix for compatibility with AnimatedNames plugin (you're welcome Morby)
         protocolManager = ProtocolLibrary.getProtocolManager();
         if (getServer().getPluginManager().isPluginEnabled("AnimatedNames")) {
             protocolManager.addPacketListener(new PacketAdapter(this,
@@ -54,7 +56,7 @@ public class TownyRelationalColors extends JavaPlugin {
             });
         }
 
-        this.getCommand("rc").setExecutor(new Commands(townSbManager));
+        this.getCommand("rc").setExecutor(new Commands());
         this.getCommand("rc").setTabCompleter(new TabComplete());
 
         // For on reload
@@ -74,14 +76,21 @@ public class TownyRelationalColors extends JavaPlugin {
      */
     public void initListeners() {
         PluginManager plugin = this.getServer().getPluginManager();
-        plugin.registerEvents(new PlayerLoginListener(townSbManager, this), this);
-        plugin.registerEvents(new TownDisbandListener(townSbManager), this);
-        plugin.registerEvents(new JoinLeaveTownListener(townSbManager), this);
-        plugin.registerEvents(new JoinLeaveNationListener(townSbManager), this);
-        plugin.registerEvents(new NationEnemyListener(townSbManager), this);
-        plugin.registerEvents(new NationDisbandListener(townSbManager), this);
-        plugin.registerEvents(new ScuffedNationAllyListener(this, townSbManager), this);
-        plugin.registerEvents(new TownCreateListener(townSbManager, this), this);
+        plugin.registerEvents(new PlayerLoginListener(), this);
+        plugin.registerEvents(new TownDisbandListener(), this);
+        plugin.registerEvents(new JoinLeaveTownListener(), this);
+        plugin.registerEvents(new JoinLeaveNationListener(), this);
+        plugin.registerEvents(new NationEnemyListener(), this);
+        plugin.registerEvents(new NationDisbandListener(), this);
+        plugin.registerEvents(new ScuffedNationAllyListener(), this);
+        plugin.registerEvents(new TownCreateListener(), this);
+    }
+
+    /**
+     * @return instance of the scoreboard manager
+     */
+    public static TownScoreboardManager getScoreboardManager() {
+        return townSbManager;
     }
 
 }

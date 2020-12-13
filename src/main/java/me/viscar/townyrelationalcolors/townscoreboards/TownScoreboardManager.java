@@ -1,10 +1,7 @@
-package me.viscar.townyrelationalcolors;
+package me.viscar.townyrelationalcolors.townscoreboards;
 
-import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
@@ -12,11 +9,11 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -26,8 +23,7 @@ public class TownScoreboardManager {
 
     //Constructor
     public TownScoreboardManager() {
-        initConfigFields();
-        initTeamsContainers();
+        reinitialize();
     }
 
     public void reinitialize() {
@@ -88,6 +84,7 @@ public class TownScoreboardManager {
      * Sets the player's scoreboard to their town's on login and handles the player's toggle
      */
     public void onPlayerLogin(Player player) {
+        System.out.println("Player login");
         HashSet<String> addedGroups = new HashSet<>();
         ArrayList<Rank> playerRanksList = new ArrayList<>();
         for (Rank rank : customRanks) {
@@ -202,26 +199,7 @@ public class TownScoreboardManager {
         // Player leave town method acts after the player leaves, so remove green from self separately
         String prefix = getPlayerPrefixes(player);
         ChatColor relColor = getRankColor(player);
-        PacketContainer redundantPacket = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        PacketContainer teamPacket = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
-        // Set mode
-        redundantPacket.getIntegers().write(0, 0);
-        teamPacket.getIntegers().write(0, 3);
-        // Set name
-        redundantPacket.getStrings().write(0, "RC" + relColor + prefix);
-        teamPacket.getStrings().write(0, "RC" + relColor + prefix);
-        // Set prefix
-        teamPacket.getChatComponents().write(1, WrappedChatComponent.fromText(prefix));
-        // Set players to send
-        teamPacket.getSpecificModifier(Collection.class).write(0, Arrays.asList(player.getName()));
-
-        try {
-            protocolManager.sendServerPacket(player, teamPacket);
-            protocolManager.sendServerPacket(player, redundantPacket);
-        } catch (InvocationTargetException e) {
-            Bukkit.getLogger().info("[RC] Runtime error while sending packets to " + player.getName() + " on leaving town, aborting");
-            return;
-        }
+        PacketSender.sendTeamPackets(player, relColor, prefix, Arrays.asList(player.getName()));
     }
 
     /**
@@ -314,18 +292,18 @@ public class TownScoreboardManager {
     // FIELDS
 
     private void initConfigFields() {
-        this.plugin = Bukkit.getPluginManager().getPlugin("TownyRelationalColors");
+        plugin = Bukkit.getPluginManager().getPlugin("TownyRelationalColors");
+        FileConfiguration config = Bukkit.getPluginManager().getPlugin("TownyRelationalColors").getConfig();
+        townColor = ChatColor.valueOf(config.getString("relationColor.town"));
+        nationColor = ChatColor.valueOf(config.getString("relationColor.nation"));
+        enemyColor = ChatColor.valueOf(config.getString("relationColor.enemy"));
+        allyColor = ChatColor.valueOf(config.getString("relationColor.ally"));
 
-        townColor = ChatColor.valueOf(plugin.getConfig().getString("relationColor.town"));
-        nationColor = ChatColor.valueOf(plugin.getConfig().getString("relationColor.nation"));
-        enemyColor = ChatColor.valueOf(plugin.getConfig().getString("relationColor.enemy"));
-        allyColor = ChatColor.valueOf(plugin.getConfig().getString("relationColor.ally"));
-
-        if (plugin.getConfig().getBoolean("spaceBetweenPrefixAndName"))
+        if (config.getBoolean("spaceBetweenPrefixAndName"))
             spaceBetween = " ";
 
         // Read in and parse custom ranks from config
-        for (String rankLine : plugin.getConfig().getStringList("customRanks")) {
+        for (String rankLine : config.getStringList("customRanks")) {
             String[] rankParts = rankLine.split(",");
             ChatColor color = ChatColor.valueOf(rankParts[0]);
             if (color == null) {

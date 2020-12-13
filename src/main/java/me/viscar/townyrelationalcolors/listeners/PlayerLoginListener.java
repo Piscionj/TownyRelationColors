@@ -1,20 +1,17 @@
 package me.viscar.townyrelationalcolors.listeners;
 
-import me.viscar.townyrelationalcolors.TownScoreboardManager;
+import me.viscar.townyrelationalcolors.TownyRelationalColors;
+import me.viscar.townyrelationalcolors.townscoreboards.TownScoreboardManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.Plugin;
 
 
 public class PlayerLoginListener implements Listener {
     private TownScoreboardManager tsbm;
-    private Plugin plugin;
-
-    public PlayerLoginListener(TownScoreboardManager tsbm, Plugin plugin) {
-        this.tsbm = tsbm;
-        this.plugin = plugin;
+    public PlayerLoginListener() {
+        this.tsbm = TownyRelationalColors.getScoreboardManager();
     }
 
     /**

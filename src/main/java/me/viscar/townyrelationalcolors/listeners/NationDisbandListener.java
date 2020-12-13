@@ -1,18 +1,19 @@
 package me.viscar.townyrelationalcolors.listeners;
 
-import me.viscar.townyrelationalcolors.TownScoreboardManager;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.PreDeleteNationEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Nation;
+import me.viscar.townyrelationalcolors.TownyRelationalColors;
+import me.viscar.townyrelationalcolors.townscoreboards.TownScoreboardManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class NationDisbandListener implements Listener {
 
     private TownScoreboardManager tsbm;
-    public NationDisbandListener(TownScoreboardManager tsbm){
-        this.tsbm = tsbm;
+    public NationDisbandListener(){
+        this.tsbm = TownyRelationalColors.getScoreboardManager();
     }
 
     /**

@@ -1,4 +1,4 @@
-package me.viscar.townyrelationalcolors;
+package me.viscar.townyrelationalcolors.townscoreboards;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
